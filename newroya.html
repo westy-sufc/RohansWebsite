@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flower Care Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f8ff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
+        #game-container {
+            padding: 20px;
+            margin-top: 50px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1 {
+            color: #ff6347;
+        }
+
+        button {
+            padding: 10px 20px;
+            margin-top: 10px;
+            border: none;
+            background-color: #ff6347;
+            color: white;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            background-color: #ccc;
+        }
+
+        #flower-container {
+            margin-top: 20px;
+            height: 150px;
+            background-color: #e0f7fa;
+            border: 2px solid #00796b;
+            border-radius: 5px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flower {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            bottom: 0;
+            transition: all 1s ease-in-out;
+        }
+
+        #status-message {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+    <div id="game-container">
+        <h1>Flower Care Game</h1>
+
+        <div id="flower-container">
+            <!-- Flower image will be dynamically added here -->
+        </div>
+
+        <button id="plant-seed-btn">Plant Seed</button>
+        <button id="water-flower-btn" disabled>Water Flower</button>
+        <p id="status-message">Plant a seed to start the game!</p>
+    </div>
+
+    <script>
+        const plantSeedButton = document.getElementById("plant-seed-btn");
+        const waterFlowerButton = document.getElementById("water-flower-btn");
+        const flowerContainer = document.getElementById("flower-container");
+        const statusMessage = document.getElementById("status-message");
+
+        let flowerStage = 0; // 0 = Seed, 1 = Sprout, 2 = Bud, 3 = Bloom
+        let flowerElement = null;
+
+        // Use the image hosted on GitHub
+        const flowerImageSrc = "https://raw.githubusercontent.com/westy-sufc/RohansWebsite/main/flowergame.png";
+
+        const flowerStages = [
+            "seed",  // Stage 0: Seed
+            "sprout", // Stage 1: Sprout
+            "bud",    // Stage 2: Bud
+            "bloom"   // Stage 3: Bloom
+        ];
+
+        plantSeedButton.addEventListener("click", plantSeed);
+        waterFlowerButton.addEventListener("click", waterFlower);
+
+        function plantSeed() {
+            // Create flower element with the GitHub-hosted image
+            flowerElement = document.createElement("img");
+            flowerElement.src = flowerImageSrc;
+            flowerElement.alt = "Flower";
+            flowerElement.classList.add("flower");
+            flowerContainer.appendChild(flowerElement);
+
+            // Start with Seed stage
+            flowerStage = 0;
+            updateFlower();
+            waterFlowerButton.disabled = false;
+            statusMessage.textContent = "Water the seed to start growing!";
+        }
+
+        function waterFlower() {
+            if (flowerStage < 3) {
+                flowerStage++;
+                updateFlower();
+            }
+
+            if (flowerStage === 3) {
+                statusMessage.textContent = "Your flower is fully bloomed!";
+                waterFlowerButton.disabled = true;
+            } else {
+                statusMessage.textContent = "Water again to help it grow!";
+            }
+        }
+
+        function updateFlower() {
+            switch (flowerStage) {
+                case 0: // Seed stage
+                    flowerElement.style.width = "50px";
+                    flowerElement.style.height = "50px";
+                    flowerElement.style.opacity = 0.5; // Semi-transparent for seed
+                    break;
+                case 1: // Sprout stage
+                    flowerElement.style.width = "75px";
+                    flowerElement.style.height = "75px";
+                    flowerElement.style.opacity = 1;
+                    break;
+                case 2: // Bud stage
+                    flowerElement.style.width = "100px";
+                    flowerElement.style.height = "100px";
+                    break;
+                case 3: // Bloom stage
+                    flowerElement.style.width = "120px";
+                    flowerElement.style.height = "120px";
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
